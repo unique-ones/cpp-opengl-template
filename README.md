@@ -2,6 +2,8 @@
 
 This repository serves as a template for starting OpenGL development in C++. It provides a basic setup with necessary configurations to kickstart your OpenGL projects.
 
+![opengl](https://github.com/unique-ones/cpp-opengl-template/assets/45200003/a9cb589f-d5fc-464a-9055-9cce4fa33e23)
+
 ## Prerequisites
 
 In order to use this template, you must have a few things installed:
