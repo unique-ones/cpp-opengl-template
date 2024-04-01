@@ -27,24 +27,37 @@ file(GLOB PROJECT_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp"
 )
 
-# Fetch glfw and glm from github
+# Executable definition with the project sources
+add_executable("${PROJECT_NAME}"
+    "${PROJECT_SOURCES}"
+)
+
+# Fetch glfw and glm from GitHub
 include(FetchContent)
 FetchContent_Declare(glfw GIT_REPOSITORY https://github.com/glfw/glfw.git)
 FetchContent_Declare(glm GIT_REPOSITORY https://github.com/g-truc/glm.git)
 FetchContent_MakeAvailable(glfw glm)
 
-# Executable definition with the project sources and extern sources
-add_executable("${PROJECT_NAME}"
-    "${PROJECT_SOURCES}"
-    "${CMAKE_SOURCE_DIR}/extern/stb_image.c"
-    "${CMAKE_SOURCE_DIR}/extern/stb_image.h"
-    "${CMAKE_SOURCE_DIR}/extern/glad/glad.c"
-    "${CMAKE_SOURCE_DIR}/extern/glad/glad.h"
-    "${CMAKE_SOURCE_DIR}/extern/glad/khrplatform.h"
-)
+# Optionally fetch imgui from GitHub
+if (IMGUI_LIBRARY)
+    FetchContent_Declare(imgui GIT_REPOSITORY https://github.com/ocornut/imgui.git GIT_TAG master)
+    FetchContent_MakeAvailable(imgui)
 
-# Add include path of extern folder to project executable
-target_include_directories("${PROJECT_NAME}" PUBLIC "${CMAKE_SOURCE_DIR}/extern")
+    file(GLOB IMGUI_SOURCES
+        "${imgui_SOURCE_DIR}/*.cpp"
+        "${imgui_SOURCE_DIR}/backends/imgui_impl_glfw.cpp"
+        "${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp"
+    )
 
-# Link glfw and glm with project executable
-target_link_libraries("${PROJECT_NAME}" glfw glm::glm)
+    add_library(imgui STATIC ${IMGUI_SOURCES})
+    target_include_directories(imgui PUBLIC
+        "${imgui_SOURCE_DIR}"
+        "${imgui_SOURCE_DIR}/backends"
+        "${imgui_SOURCE_DIR}/examples"
+    )
+    target_link_libraries(imgui PRIVATE glfw)
+    target_link_libraries("${PROJECT_NAME}" PUBLIC imgui)
+endif()
+
+# Link libraries with project executable
+target_link_libraries("${PROJECT_NAME}" PUBLIC extern glfw glm::glm)

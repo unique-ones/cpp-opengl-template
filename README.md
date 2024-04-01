@@ -117,3 +117,17 @@ The CMake project is configured in a way, such that if you add source files to t
 ### Handling Of Assets
 
 The project's assets should be contained in the `assets` folder. This folder is automatically copied into the build folder whenever the CMake project is reconfigured. That implies that in order to use newly added assets, you must reconfigure the CMake project.
+
+### Optional Libraries
+
+Currently, the only optional library that is included with this template is [Dear ImGui](https://github.com/ocornut/imgui). To use it in your project, you simple have to locate the following line in the root `CMakeLists.txt`:
+
+```CMake
+set(IMGUI_LIBRARY OFF)
+```
+
+and change it as follows:
+
+```CMake
+set(IMGUI_LIBRARY ON)
+```

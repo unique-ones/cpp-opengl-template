@@ -21,29 +21,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-cmake_minimum_required(VERSION 3.22)
+# Extern library definition
+add_library(extern STATIC
+    "${CMAKE_SOURCE_DIR}/extern/stb_image.c"
+    "${CMAKE_SOURCE_DIR}/extern/stb_image.h"
+    "${CMAKE_SOURCE_DIR}/extern/glad/glad.c"
+    "${CMAKE_SOURCE_DIR}/extern/glad/glad.h"
+    "${CMAKE_SOURCE_DIR}/extern/glad/khrplatform.h"
+)
 
-# Set the project name and language
-project(cpp-opengl-template LANGUAGES C CXX)
-
-# Set the C and C++ standard
-set(CMAKE_C_STANDARD 11)
-set(CMAKE_C_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
-
-# Optional library
-set(IMGUI_LIBRARY OFF)
-
-# Add subprojects
-add_subdirectory(extern)
-add_subdirectory(source)
-
-# Compile commands for clangd
-if(EXISTS "${CMAKE_INSTALL_PREFIX}/compile_commands.json")
-    file(CREATE_LINK "${CMAKE_INSTALL_PREFIX}/compile_commands.json" "${CMAKE_CURRENT_SOURCE_DIR}/compile_commands.json")
-endif()
-
-# Copy assets to the output directory
-file(COPY ${CMAKE_SOURCE_DIR}/assets DESTINATION ${CMAKE_INSTALL_PREFIX})
+# Add include path of extern folder to the library
+target_include_directories(extern PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
