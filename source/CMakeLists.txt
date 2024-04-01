@@ -36,6 +36,8 @@ FetchContent_MakeAvailable(glfw glm)
 # Executable definition with the project sources and extern sources
 add_executable("${PROJECT_NAME}"
     "${PROJECT_SOURCES}"
+    "${CMAKE_SOURCE_DIR}/extern/stb_image.c"
+    "${CMAKE_SOURCE_DIR}/extern/stb_image.h"
     "${CMAKE_SOURCE_DIR}/extern/glad/glad.c"
     "${CMAKE_SOURCE_DIR}/extern/glad/glad.h"
     "${CMAKE_SOURCE_DIR}/extern/glad/khrplatform.h"
